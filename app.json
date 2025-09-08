@@ -27,11 +27,20 @@
       "expo-router",
       [
         "expo-splash-screen",
+        
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "food_ordering",
+          "organization": "hashim-2p"
         }
       ]
     ],

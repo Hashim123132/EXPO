@@ -58,6 +58,7 @@ export const signIn = async ({email, password}:SignInParams)=>{
         
     }
 }
+//getting created user info for dashboard and the like
 export const getCurrentUser = async()=>{
     try {
         const currentAccount = await account.get();
