@@ -1,12 +1,18 @@
-import { CreateUserParams, SignInParams } from "@/type";
+import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
 import { Account, Avatars, Client, ID, Query, TablesDB } from "react-native-appwrite";
 //configuration coming from appwrite
 const appwriteConfig = {
-    endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
+     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
      projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
      platform: 'com.hashim.FryHub',
      databaseId:'68bdc43a00392a307ab0',
-     usersCollectionId:'user'
+     bucketId:'68c1d38b00357d1b5f94',
+        usersTableId:'user',
+        categoriesTableId:'categories',
+        menuTableId:'menu',
+        customizationsTableId:'customizations',
+        menuCustomizationsTableId:'menu_customizations'
+
 }
 //using that configuration in client
 export const client = new Client();
@@ -18,6 +24,7 @@ client
 export const account = new Account(client)
 export const tables = new TablesDB(client)
 export const avatars = new Avatars(client)
+export const storage = new Storage()
 
 //now creating user for signup
 export const createUser = async({email, password, name}: CreateUserParams)=> {
@@ -35,7 +42,7 @@ export const createUser = async({email, password, name}: CreateUserParams)=> {
         //putting data in DB (table)
            return await tables.createRow({
                 databaseId: appwriteConfig.databaseId,
-                tableId: appwriteConfig.usersCollectionId, 
+                tableId: appwriteConfig.usersTableId, 
                 rowId: ID.unique(),
                 data: {
                     accountId: newAccount.$id,
@@ -66,13 +73,51 @@ export const getCurrentUser = async()=>{
         const currentUser = await tables.listRows(
             {
             databaseId: appwriteConfig.databaseId,
-            tableId: appwriteConfig.usersCollectionId,
+            tableId: appwriteConfig.usersTableId,
             queries: [Query.equal("accountId", currentAccount.$id)],
     }
         )
         if(!currentUser) throw Error
 
         return currentUser.rows[0]
+    } catch (e) {
+        throw new Error(e as string)
+    }
+}
+
+export const getMenu = async ({ category, query }:GetMenuParams)=>{
+    try {
+        const queries :string[] = [];
+        //queries.push will append the value coming from Query.equal
+
+        //Filter by category
+        if(category) queries.push(Query.equal('categories', category));
+
+        //search by name
+        if(query) queries.push(Query.search('name', query));
+        
+        const menus = await tables.listRows({
+                databaseId: appwriteConfig.databaseId,
+                tableId: appwriteConfig.menuTableId,
+                queries,
+                });
+    
+        return menus.rows;
+    
+    } catch (e) {
+        throw new Error(e as string)
+    }
+}
+//to get categories
+export const getCategories = async ()=>{
+    try {
+        const categories= await tables.listRows({
+              databaseId: appwriteConfig.databaseId,
+              tableId: appwriteConfig.categoriesTableId,
+               
+        });
+       
+    
     } catch (e) {
         throw new Error(e as string)
     }
