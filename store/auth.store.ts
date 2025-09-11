@@ -17,7 +17,7 @@ type AuthState = {
 
 const useAuthStore = create<AuthState>((set) => ({
     //def state according 
-    isAuthenticated: false,
+    isAuthenticated: true,
     user: null,
     isLoading: false,
    
