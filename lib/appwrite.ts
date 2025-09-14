@@ -90,16 +90,15 @@ export const getCurrentUser = async()=>{
 
 export const getMenu = async ({ category, query }: GetMenuParams): Promise<MenuItem[]> => {
   try {
-    const queries: string[] = [];
+   const queries: string[] = [];
+if (category) queries.push(Query.equal('categories', category));
+if (query) queries.push(Query.search('name', query));
 
-    if (category) queries.push(Query.equal('categories', category));
-    if (query) queries.push(Query.search('name', query));
-
-    const menus = await tables.listRows({
-      databaseId: appwriteConfig.databaseId,
-      tableId: appwriteConfig.menuTableId,
-      queries,
-    });
+const menus = await tables.listRows({
+  databaseId: appwriteConfig.databaseId,
+  tableId: appwriteConfig.menuTableId,
+  ...(queries.length ? { queries } : {}),  // ✅ will fetch all if empty
+});
 
     return menus.rows as unknown as MenuItem[];
   } catch (e) {
@@ -120,4 +119,34 @@ export const getCategories = async (): Promise<Category[]> => {
     throw new Error(e as string);
   }
 };
+// Get a single row by ID
+export const getRow = async <T>(tableId: string, rowId: string): Promise<T> => {
+  try {
+    const res = await tables.getRow({
+      databaseId: appwriteConfig.databaseId,
+      tableId,
+      rowId,
+    });
+    return res as unknown as T;
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
+
+// List rows by query
+export const listRows = async <T>(tableId: string, queries: string[] = []): Promise<T[]> => {
+  try {
+    const res = await tables.listRows({
+      databaseId: appwriteConfig.databaseId,
+      tableId,
+      ...(queries.length ? { queries } : {}),
+    });
+    return res.rows as unknown as T[];
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
+
+
+
 export default appwriteConfig

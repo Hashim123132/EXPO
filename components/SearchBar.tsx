@@ -5,7 +5,7 @@ import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 const SearchBar = () => {
   //getting the query from the URL
   const params = useLocalSearchParams<{query?: string}>()
-  const [query, setQuery] = useState(params.query)
+  const [query, setQuery] = useState(params.query ?? '');
   // const debounceSearch = useDebouncedCallback() => 
   //    router.push(`/search?query=${text}`),
   //   500
@@ -17,13 +17,13 @@ const SearchBar = () => {
   }
 
   const handleSubmit = () => {
-    if(query!.trim()) router.setParams({query});
+  if (query.trim()) router.setParams({ query });
   }
   return (
     <View className='searchbar'>
       <TextInput 
         className='flex-1 p-5'
-        placeholder='Search for pizzars, burgers ...'
+        placeholder='Search for pizzas, burgers ...'
         value={query}
         onChangeText={handleSearch}
         onSubmitEditing={handleSubmit}

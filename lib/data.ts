@@ -1,3 +1,4 @@
+//the data which will be seeded accordingly in the database
 const dummyData = {
     categories: [
         { name: "Burgers", description: "Juicy grilled burgers" },
