@@ -11,10 +11,10 @@ const CustomButton = ({
   isLoading = false
 }:CustomButtonProps) => {
   return (
-    <TouchableOpacity className={cn('custom-btn', style)} onPress={onPress}>
+    <TouchableOpacity className={cn('custom-btn mt-7', style)} onPress={onPress}>
       {leftIcon}
 
-        <View className='flex-center flex-row'>
+        <View className='flex-center flex-row '>
           {isLoading ? (
             <ActivityIndicator size='small' color='white' />
           ) : (

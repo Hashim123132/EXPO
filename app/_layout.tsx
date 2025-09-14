@@ -6,6 +6,8 @@ import {useFonts} from "expo-font";
 import { useEffect } from "react";
 import * as Sentry from '@sentry/react-native';
 import useAuthStore from "@/store/auth.store";
+import Toast from "react-native-toast-message";
+
 
 Sentry.init({
   dsn: 'https://e461219ac0da896d8fbcca4179ee2bb8@o4509969895391232.ingest.de.sentry.io/4509986195832912',
@@ -48,5 +50,11 @@ useEffect(() => {
 
 if(!fontsLoaded || isLoading) return null;
 
-  return <Stack screenOptions={{headerShown: false}} />;
+  return (
+    <>
+  <Stack screenOptions={{headerShown: false}}/>
+    <Toast />
+    </>
+
+);
 });

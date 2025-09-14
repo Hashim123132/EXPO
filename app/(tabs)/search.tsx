@@ -3,14 +3,12 @@ import { getCategories, getMenu } from '@/lib/appwrite';
 import useAppwrite from '@/lib/useAppwrite'
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { View, Text, FlatList, Button } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import cn from 'clsx'
 import MenuCard from '@/components/MenuCard';
-import { MenuItem } from '@/type';
 import Filter from '@/components/Filter';
 import SearchBar from '@/components/SearchBar';
-import seed from '@/lib/seed'; // 👈 import your seed function
 
 const search = () => {
   const { category = '', query = '' } = useLocalSearchParams<{query: string; category: string}>();

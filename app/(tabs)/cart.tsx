@@ -60,7 +60,7 @@ const cart = () => {
               valueStyle="!text-dark-100"
               />
             </View>
-            <CustomButton title='Order Now'/>
+            <CustomButton title='Order Now' />
 
           </View>
         )}

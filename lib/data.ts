@@ -17,7 +17,6 @@ const dummyData = {
         { name: "Olives", price: 15, type: "topping" },
         { name: "Mushrooms", price: 18, type: "topping" },
         { name: "Tomatoes", price: 10, type: "topping" },
-        { name: "Bacon", price: 30, type: "topping" },
         { name: "Avocado", price: 35, type: "topping" },
 
         // Sides
@@ -44,7 +43,7 @@ const dummyData = {
             calories: 550,
             protein: 25,
             category_name: "Burgers",
-            customizations: ["Extra Cheese", "Coke", "Fries", "Onions", "Bacon"],
+            customizations: ["Extra Cheese", "Coke", "Fries", "Onions", "Beef"],
         },
         {
             name: "Pepperoni Pizza",
@@ -77,8 +76,8 @@ const dummyData = {
             customizations: ["Jalapeños", "Iced Tea", "Fries", "Salad"],
         },
         {
-            name: "BBQ Bacon Burger",
-            description: "Smoky BBQ sauce, crispy bacon, cheddar",
+            name: "BBQ Beef Burger",
+            description: "Smoky BBQ sauce, crispy Beef, cheddar",
             image_url:
                 "https://static.vecteezy.com/system/resources/previews/060/236/245/large_2x/a-large-hamburger-with-cheese-onions-and-lettuce-free-png.png",
             price: 27.5,
@@ -86,7 +85,7 @@ const dummyData = {
             calories: 650,
             protein: 29,
             category_name: "Burgers",
-            customizations: ["Onions", "Fries", "Coke", "Bacon", "Avocado"],
+            customizations: ["Onions", "Fries", "Coke", "Beef", "Avocado"],
         },
         {
             name: "Chicken Caesar Wrap",
@@ -212,13 +211,13 @@ const dummyData = {
             name: "Chicken Club Sandwich",
             description: "Grilled chicken, lettuce, cheese, tomato",
             image_url:
-                "https://static.vecteezy.com/system/resources/previews/060/364/135/large_2x/a-flavorful-club-sandwich-with-turkey-bacon-and-fresh-vegetables-sliced-and-isolated-on-a-transparent-background-free-png.png",
+                "https://static.vecteezy.com/system/resources/previews/060/364/135/large_2x/a-flavorful-club-sandwich-with-turkey--and-fresh-vegetables-sliced-and-isolated-on-a-transparent-background-free-png.png",
             price: 27.49,
             rating: 4.5,
             calories: 610,
             protein: 31,
             category_name: "Sandwiches",
-            customizations: ["Bacon", "Tomatoes", "Mozzarella Sticks", "Iced Tea"],
+            customizations: ["Beef", "Tomatoes", "Mozzarella Sticks", "Iced Tea"],
         },
     ],
 };

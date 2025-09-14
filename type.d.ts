@@ -36,6 +36,7 @@ export interface CartItemType {
     image_url: string;
     quantity: number;
     customizations?: CartCustomization[];
+    type?: string;
 }
 
 export interface CartStore {
