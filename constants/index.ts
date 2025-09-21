@@ -26,10 +26,10 @@ import burgerOne from "@/assets/images/burger-one.png";
 import burgerTwo from "@/assets/images/burger-two.png";
 import pizzaOne from "@/assets/images/pizza-one.png";
 import loginGraphic from "@/assets/images/login-graphic.png";
+import buritto from "@/assets/images/buritto.png";
 import logo from "@/assets/images/logo.png";
 
 import avocado from "@/assets/images/avocado.png";
-import buritto from "@/assets/images/buritto.png";
 import cheese from "@/assets/images/cheese.png";
 import coleslaw from "@/assets/images/coleslaw.png";
 import cucumber from "@/assets/images/cucumber.png";
@@ -64,33 +64,50 @@ export const CATEGORIES = [
         name: "Burrito",
     },
 ];
-
-export const offers = [
-    {
-        id: 1,
-        title: "SUMMER COMBO",
-        image: burgerOne,
-        color: "#D33B0D",
-    },
-    {
-        id: 2,
-        title: "BURGER BASH",
-        image: burgerTwo,
-        color: "#DF5A0C",
-    },
-    {
-        id: 3,
-        title: "PIZZA PARTY",
-        image: pizzaOne,
-        color: "#084137",
-    },
-    {
-        id: 4,
-        title: "BURRITO DELIGHT",
-        image: buritto,
-        color: "#EB920C",
-    },
+//deals are comming locally not from appwrite but we are also making them in database for people to search through search component
+export const OFFERS = [
+  {
+    id: "1",
+    title: "SUMMER COMBO",
+    image: burgerOne,
+    color: "#D33B0D",
+    price: 50,
+    description: "Burger, fries, and coke at a special price!",
+    calories: 540,
+    protein: "30g",
+  },
+  {
+    id: "2",
+    title: "BURGER BASH",
+    image: burgerTwo,
+    color: "#DF5A0C",
+    price: 30.5,
+    description: "Extra cheesy delight for cheese lovers.",
+    calories: 300, // update later if you know
+    protein: '30g',
+  },
+  {
+    id: "3",
+    title: "PIZZA PARTY",
+    image: pizzaOne,
+    color: "#084137",
+    price: 12.0,
+    description: "Smoky BBQ chicken topped with tangy sauce.",
+    calories: null,
+    protein: null,
+  },
+  {
+    id: "4",
+    title: "BURRITO DELIGHT",
+    image: buritto,
+    color: "#EB920C",
+    price: 9.5,
+    description: "Loaded beef burrito with smoky seasoning.",
+    calories: null,
+    protein: null,
+  },
 ];
+
 
 export const sides = [
     {
