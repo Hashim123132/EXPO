@@ -1,3 +1,4 @@
+import { avatar } from '@/assets/images/avatar.png';
 import { Models } from "react-native-appwrite";
 
 export interface MenuItem extends Models.Document {
@@ -20,6 +21,9 @@ export interface User extends Models.Document {
     name: string;
     email: string;
     avatar: string;
+    phone?: string;
+    address1?: string;
+    address2?: string;
 }
 
 export interface CartCustomization {
@@ -91,12 +95,15 @@ interface ProfileFieldProps {
     icon: ImageSourcePropType;
 }
 
-interface CreateUserParams {
-    email: string;
-    password: string;
-    name: string;
+ interface CreateUserParams {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  address1?: string;
+  address2?: string;
+  avatar?: string;
 }
-
 interface SignInParams {
     email: string;
     password: string;

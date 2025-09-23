@@ -30,7 +30,7 @@ export const avatars = new Avatars(client)
 export const storage = new Storage(client)
 
 //now creating user for signup
-export const createUser = async({email, password, name}: CreateUserParams)=> {
+export const createUser = async({email, password, name, phone, address1, address2}: CreateUserParams)=> {
 
     try {
         //user signs up with unique id and more
@@ -38,7 +38,7 @@ export const createUser = async({email, password, name}: CreateUserParams)=> {
         if (!newAccount) throw new Error("Account creation failed");
        
         // user will be automatically signed in
-        await signIn({email, password})
+        // await signIn({email, password})
         //users first two intials of his/her name to be displayed on avatar place
         const avatarUrl = avatars.getInitialsURL(name);
   
@@ -48,10 +48,13 @@ export const createUser = async({email, password, name}: CreateUserParams)=> {
                 tableId: appwriteConfig.usersTableId, 
                 rowId: ID.unique(),
                 data: {
-                    accountId: newAccount.$id,
-                    email,
-                    name,
-                    avatar: avatarUrl,
+                  accountId: newAccount.$id,
+                  email,
+                  name,
+                  avatar: avatarUrl,
+                  phone,    
+                  address1,
+                  address2, 
                 },
              });
             
@@ -87,6 +90,24 @@ export const getCurrentUser = async()=>{
         throw new Error(e as string)
     }
 }
+
+export const updateUser = async (
+  rowId: string,
+  data: Omit<CreateUserParams, "password">
+) => {
+  try {
+    const updated = await tables.updateRow({
+      databaseId: appwriteConfig.databaseId,
+      tableId: appwriteConfig.usersTableId, // use tableId, not collectionId
+      rowId,
+      data,
+    });
+    return updated;
+  } catch (error) {
+    console.error("updateUser error:", error);
+    throw error;
+  }
+};
 
 export const getMenu = async ({ category, query }: GetMenuParams): Promise<MenuItem[]> => {
   try {
