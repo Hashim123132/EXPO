@@ -103,6 +103,7 @@ interface ProfileFieldProps {
   address1?: string;
   address2?: string;
   avatar?: string;
+  profilePic?: string;
 }
 interface SignInParams {
     email: string;
