@@ -128,16 +128,19 @@ const itemImage = item.image_url
   const totalPrice = item.price * quantity;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+   <SafeAreaView className="flex-1 bg-white">
       <ScrollView contentContainerClassName="pb-32 px-5">
-        <Image
-          source={itemImage}
-          className="w-full h-60 mt-5"
-          resizeMode="contain"
-        />
+        {/* Product Image with orangeish background */}
+        <View className="bg-orange-50 rounded-2xl mt-5 p-5">
+          <Image
+            source={itemImage}
+            className="w-full h-60"
+            resizeMode="contain"
+          />
+        </View>
+
         <Text className="h1-bold text-dark-100 mt-4">{item.name}</Text>
         <Text className="paragraph text-gray-500">{item.type}</Text>
-
         <View className="flex-row mt-4 gap-x-5">
           {/* <Text className="h2-bold text-primary">${item.price}</Text> */}
            {item.calories && item.protein ? (
@@ -180,47 +183,48 @@ const itemImage = item.image_url
             />
           </>
         )}
-
-        <View className="flex-row justify-between items-center mt-10">
-          <View className="flex-row items-center gap-x-4">
-            <TouchableOpacity
-              onPress={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="bg-gray-200 px-3 py-1 rounded-lg"
-            >
-              <Text className="h3-bold">-</Text>
-            </TouchableOpacity>
-            <Text className="h3-bold">{quantity}</Text>
-            <TouchableOpacity
-              onPress={() => setQuantity((q) => q + 1)}
-              className="bg-gray-200 px-3 py-1 rounded-lg"
-            >
-              <Text className="h3-bold">+</Text>
-            </TouchableOpacity>
-          </View>
-
+      <View className="flex-row justify-between items-center mt-10">
+        <View className="flex-row items-center gap-x-4">
           <TouchableOpacity
-            onPress={() => {
-              addItem({
-                id: item.$id,
-                name: item.name,
-                price: item.price,
-                image_url: item.image_url,
-                customizations: [],
-              });
-
-              Toast.show({
-                type: "success",
-                text1: "Added to cart",
-                text2: `${item.name} added successfully.`,
-                position: "top",
-                visibilityTime: 3000,
-              });
-            }}
-            className="bg-primary px-6 py-3 rounded-2xl"
+            onPress={() => setQuantity((q) => Math.max(1, q - 1))}
+            className="bg-orange-50 px-3 py-1 rounded-lg"
           >
-            <Text className="h3-bold text-white">(${totalPrice})</Text>
+            <Text className="h3-bold text-primary">-</Text>
+          </TouchableOpacity>
+          <Text className="h3-bold">{quantity}</Text>
+          <TouchableOpacity
+            onPress={() => setQuantity((q) => q + 1)}
+            className="bg-orange-50 px-3 py-1 rounded-lg"
+          >
+            <Text className="h3-bold text-primary">+</Text>
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            addItem({
+              id: item.$id,
+              name: item.name,
+              price: item.price,
+              image_url: item.image_url,
+              customizations: [],
+            });
+
+            Toast.show({
+              type: "success",
+              text1: "Added to cart",
+              text2: `${item.name} added successfully.`,
+              position: "top",
+              visibilityTime: 3000,
+            });
+          }}
+          className="bg-primary px-6 py-3 rounded-2xl"
+        >
+          <Text className="h3-bold text-white">(${totalPrice})</Text>
+        </TouchableOpacity>
+      </View>
+
+
       </ScrollView>
     </SafeAreaView>
   );

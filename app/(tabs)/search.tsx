@@ -3,26 +3,27 @@ import { getCategories, getMenu } from '@/lib/appwrite';
 import useAppwrite from '@/lib/useAppwrite'
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import cn from 'clsx'
 import MenuCard from '@/components/MenuCard';
 import Filter from '@/components/Filter';
 import SearchBar from '@/components/SearchBar';
 
-const search = () => {
+const Search = () => {
   const { category = '', query = '' } = useLocalSearchParams<{query: string; category: string}>();
 
-
-  //we want data from database to be fetched here we made a custom hook for that
-  const {data, refetch, loading} = useAppwrite({
-    fn: getMenu, params:{ category, query }
+  // custom hook for fetching data
+  const { data, refetch, loading } = useAppwrite({
+    fn: getMenu,
+    params: { category, query }
   });
-  const {data: categories} = useAppwrite({fn: getCategories})
+
+  const { data: categories } = useAppwrite({ fn: getCategories });
 
   useEffect(() => {
-    refetch({category, query})
-  }, [category, query])
+    refetch({ category, query })
+  }, [category, query]);
 
   return (
     <SafeAreaView className="bg-white h-full">
@@ -32,7 +33,7 @@ const search = () => {
           const isEven = index % 2 === 0;
           return (
             <View className={cn('flex-1 max-w-[48%]', !isEven ? 'mt-10' : 'mt-0')}>
-              <MenuCard item={item}/>
+              <MenuCard item={item} />
             </View>
           );
         }}
@@ -55,10 +56,26 @@ const search = () => {
             <Filter categories={categories ?? []} />
           </View>
         )}
-        ListEmptyComponent={() => !loading && <Text>No results</Text>}
+        ListEmptyComponent={() =>
+          !loading && (
+            <View className="flex-1 justify-center items-center mt-20 px-5">
+              <Image
+                source={require('@/assets/images/empty-state.png')}
+                className="w-40 h-40 mb-5"
+                resizeMode="contain"
+              />
+              <Text className="heading3 text-dark-100 text-center">
+                Nothing matched your search
+              </Text>
+              <Text className="paragraph text-dark-50 text-center mt-2">
+                Try a different search term or check for typos.
+              </Text>
+            </View>
+          )
+        }
       />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default search;
+export default Search;

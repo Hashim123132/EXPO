@@ -21,72 +21,76 @@ const Profile = () => {
   const [phone, setPhone] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
-  const [profilePic, setProfilePic] = useState(""); // base64 image
-  const [avatar, setAvatar] = useState(""); // fallback avatar URL
 
-useEffect(() => {
-  const loadUser = async () => {
-    try {
-      const user = await getCurrentUser();
-      setUserRowId(user.$id || "");
-      setName(user.name || "");
-      setEmail(user.email || "");
-      setPhone(user.phone || "");
-      setAddress1(user.address1 || "");
-      setAddress2(user.address2 || "");
+  // store both DB columns
+  const [profilePic, setProfilePic] = useState(""); // base64 string
+  const [avatar, setAvatar] = useState("");         // fallback URL
 
-      // ✅ Set avatar or profilePic
-      if (user.profilePic) {
-        setAvatar(`data:image/jpeg;base64,${user.profilePic}`);
-      } else if (user.avatar) {
-        setAvatar(user.avatar); // fallback URL
-      } else {
-        setAvatar(""); // fallback initials
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const user = await getCurrentUser();
+
+        setUserRowId(user.$id || "");
+        setName(user.name || "");
+        setEmail(user.email || "");
+        setPhone(user.phone || "");
+        setAddress1(user.address1 || "");
+        setAddress2(user.address2 || "");
+        setProfilePic(user.profilePic || ""); // base64 string or ""
+        setAvatar(user.avatar || "");         // fallback URL
+      } catch (err) {
+        console.error("Failed to load user:", err);
+      } finally {
+        setLoading(false);
       }
+    };
 
-    } catch (err) {
-      console.error("Failed to load user:", err);
-    } finally {
-      setLoading(false);
-    }
+    loadUser();
+  }, []);
+
+  // derived display logic: prefer profilePic over avatar
+  const displayAvatar = profilePic
+    ? `data:image/jpeg;base64,${profilePic}`
+    : avatar || "";
+
+  // pick new image and save
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+      base64: true,
+    });
+
+    if (result.canceled || !result.assets[0].base64) return;
+
+    const base64Data = result.assets[0].base64;
+
+    await updateUser(userRowId, {
+      name,
+      email,
+      phone,
+      address1,
+      address2,
+      profilePic: base64Data,
+    });
+
+    setProfilePic(base64Data); // update local state
   };
 
-  loadUser();
-}, []);
-
-
-const pickImage = async () => {
-  const result = await ImagePicker.launchImageLibraryAsync({
-    allowsEditing: true,
-    aspect: [1, 1],
-    quality: 0.8,
-    base64: true, // ✅ get base64 directly
-    // mediaTypes is optional; default is images
-  });
-
-  if (result.canceled || !result.assets[0].base64) return;
-
-  const base64Data = result.assets[0].base64;
-
-  // Update DB directly
-  await updateUser(userRowId, {
-    name,
-    email,
-    phone,
-    address1,
-    address2,
-    profilePic: base64Data,
-  });
-
-  // Show preview locally
-  setAvatar(`data:image/jpeg;base64,${base64Data}`);
-};
-
-
   const removeProfilePic = async () => {
-    setProfilePic("");
     try {
-      await updateUser(userRowId, { name, email, phone, address1, address2, profilePic: "" });
+      await updateUser(userRowId, {
+        name,
+        email,
+        phone,
+        address1,
+        address2,
+        profilePic: "", // clear profilePic in DB
+      });
+
+      setProfilePic(""); // clear locally → will auto fallback to avatar
       Alert.alert("Removed", "Profile picture removed");
     } catch (err) {
       console.error(err);
@@ -96,7 +100,14 @@ const pickImage = async () => {
 
   const handleUpdate = async () => {
     try {
-      await updateUser(userRowId, { name, email, phone, address1, address2, profilePic });
+      await updateUser(userRowId, {
+        name,
+        email,
+        phone,
+        address1,
+        address2,
+        profilePic,
+      });
       Alert.alert("Success", "Profile updated!");
     } catch (err) {
       console.error(err);
@@ -113,15 +124,18 @@ const pickImage = async () => {
     }
   };
 
-  if (loading) return <View style={styles.centered}><Text>Loading profile...</Text></View>;
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Loading profile...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
-        <Image
-          source={{ uri: profilePic || avatar }}
-          style={styles.avatar}
-        />
+        <Image source={{ uri: displayAvatar }} style={styles.avatar} />
         <TouchableOpacity style={styles.editIcon} onPress={pickImage}>
           <Icon name="edit-2" size={16} color="#fff" />
         </TouchableOpacity>
@@ -163,7 +177,7 @@ const pickImage = async () => {
 
 export default Profile;
 
-// Styles same as before
+// styles same as before...
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", alignItems: "center", padding: 20 },
   avatarContainer: { position: "relative", alignItems: "center", justifyContent: "center", marginVertical: 20 },
