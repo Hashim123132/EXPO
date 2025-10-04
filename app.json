@@ -27,7 +27,6 @@
       "expo-router",
       [
         "expo-splash-screen",
-        
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
@@ -42,7 +41,9 @@
           "project": "food_ordering",
           "organization": "hashim-2p"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

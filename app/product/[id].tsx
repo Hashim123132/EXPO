@@ -164,7 +164,7 @@ const itemImage = item.image_url
             </Text>
             <FlatList
               data={customizations}
-              keyExtractor={(c) => c.id}
+              keyExtractor={(c, index) => c.id ?? c.id ?? index.toString()} 
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({ item: c }) => (

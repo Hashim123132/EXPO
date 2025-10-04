@@ -2,8 +2,10 @@ import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
 import { Account, Avatars, Client, ID, Query, TablesDB, Storage } from "react-native-appwrite";
 import { Category } from '@/type';
 import { MenuItem } from '@/type';
+import { Functions } from "react-native-appwrite";
 
 //configuration coming from appwrite
+
 const appwriteConfig = {
      endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
      projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
@@ -24,10 +26,27 @@ client
         .setProject(appwriteConfig.projectId)
         .setPlatform(appwriteConfig.platform)
 //using client as requirement to use Account instance
+export const functions = new Functions(client);
 export const account = new Account(client)
 export const tables = new TablesDB(client)
 export const avatars = new Avatars(client)
 export const storage = new Storage(client)
+export const createCheckoutSession = async (amount: number) => {
+  try {
+    const exec = await functions.createExecution(
+      "68d58d9d0015f0e49432",               // replace with your Appwrite function ID
+      JSON.stringify({ amount })        // body must be string
+    );
+
+    const result = JSON.parse(exec.responseBody);
+    if (result.error) throw new Error(result.error);
+
+    return result.clientSecret;
+  } catch (err) {
+    console.error("Checkout error:", err);
+    throw err;
+  }
+};
 
 //now creating user for signup
 export const createUser = async({email, password, name, phone, address1, address2}: CreateUserParams)=> {

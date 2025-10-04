@@ -114,3 +114,12 @@ interface GetMenuParams {
     category: string;
     query: string;
 }
+export type RootStackParamList = {
+  Home: undefined;
+  CheckoutScreen: {
+    amount: number;
+    items: CartItemType[];
+  };
+  SuccessScreen: undefined;
+  CancelScreen: undefined;
+};
